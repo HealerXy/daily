@@ -271,7 +271,7 @@ var hobbyInc=function(id){var cur=data.hobbyToday[id]||0;var all=0;Object.keys(d
 var hobbyDec=function(id){var cur=data.hobbyToday[id]||0;if(cur<=0)return;data.hobbyToday[id]=cur-1;saveToGitHub();updateToday();renderHobby()};
 
 function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
-function refreshAll(){renderDaily();renderWork();renderHobby();renderHistory();updateToday()}
+function refreshAll(){var af=document.activeElement;if(af&&(af.tagName==="INPUT"||af.tagName==="TEXTAREA"))return;renderDaily();renderWork();renderHobby();renderHistory();updateToday()}
 
 // Token setup
 function manualSync(){if(!token)return;loadFromGitHub().then(function(r){if(r){refreshAll();toast('synced')}else{toast('sync failed')}})}
