@@ -28,7 +28,7 @@
       "id": "w_1784388485172",
       "t": "学习ai制作网页",
       "bonus": 20,
-      "done": false
+      "done": true
     }
   ],
   "hobbyTasks": [
@@ -53,42 +53,23 @@
       "done": false
     }
   ],
-  "workToday": {
-    "w_1784388068484": {
-      "hours": 0,
-      "done": false
-    },
-    "w_1784388076453": {
-      "hours": 0,
-      "done": false
-    },
-    "w_1784388128248": {
-      "hours": 0,
-      "done": false
-    },
-    "w_1784388144979": {
-      "hours": 0,
-      "done": false
-    },
-    "w_1784388485172": {
-      "hours": 3,
-      "done": true
+  "workToday": {},
+  "hobbyToday": {},
+  "records": {
+    "2026-07-18": {
+      "daily": 0,
+      "work": 50,
+      "hobby": 0,
+      "total": 50
     }
   },
-  "hobbyToday": {
-    "h_1784388162461": 0,
-    "h_1784388168314": 0,
-    "h_1784388173299": 0,
-    "h_1784388177138": 0
-  },
-  "records": {},
   "settings": {
     "workPtsPerHr": 10,
     "hobbyPtsPerCheck": 5,
     "hobbyMaxPerDay": 20
   },
   "2026-07-18": {
-    "sleep": true,
+    "sleep": false,
     "diet": false,
     "workout": false,
     "ent": false,
