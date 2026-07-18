@@ -93,7 +93,7 @@
     "workout": true,
     "ent": false,
     "jyh": true,
-    "hyg": false,
+    "hyg": true,
     "fam": false,
     "world": false
   }
