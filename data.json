@@ -62,7 +62,7 @@
   "workToday": {
     "w_1784391934951": {
       "hours": 4,
-      "done": false
+      "done": true
     }
   },
   "hobbyToday": {},
@@ -90,8 +90,8 @@
     "world": false
   },
   "2026-07-19": {
-    "sleep": true,
-    "diet": true,
+    "sleep": false,
+    "diet": false,
     "workout": false,
     "ent": false,
     "jyh": false,
