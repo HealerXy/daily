@@ -239,8 +239,9 @@ function checkMidnight(){
 }
 
 setInterval(checkMidnight,30000);
+if(token)setInterval(function(){loadFromGitHub().then(function(r){if(r)refreshAll()})},10000);
 window.addEventListener('beforeunload',function(){saveSyncNow()});
-document.addEventListener('visibilitychange',function(){if(!document.hidden){checkMidnight();if(token)loadFromGitHub().then(refreshAll)}});
+document.addEventListener('visibilitychange',function(){if(!document.hidden){checkMidnight();saveSyncNow();if(token)loadFromGitHub().then(function(r){if(r)refreshAll()})}});
 
 var toggleItem=function(id){data[DK][id]=!data[DK][id];var card=document.getElementById('card-'+id);if(card){if(data[DK][id])card.classList.add('done');else card.classList.remove('done')}saveToGitHub();updateToday();return false};
 var showPg=function(p){if(currentPg&&currentPg==='checkin'&&p!=='checkin')saveSyncNow();currentPg=p;document.querySelectorAll('.pg').forEach(function(el){el.classList.remove('show')});document.getElementById(p).classList.add('show');document.querySelectorAll('.nav a').forEach(function(a){a.classList.remove('on')});document.getElementById('nav-'+p).classList.add('on');if(p==='today')updateToday();if(p==='history')renderHistory();if(p==='checkin'&&token){loadFromGitHub().then(refreshAll)};return false};
