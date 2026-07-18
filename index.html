@@ -123,7 +123,7 @@ var OWNER='HealerXy',REPO='daily',FILE='data.json';
 var API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+FILE;
 var sha=null,token=null;
 
-var D=new Date();
+var currentPg='checkin';var D=new Date();
 var DK=D.getFullYear()+'-'+String(D.getMonth()+1).padStart(2,'0')+'-'+String(D.getDate()).padStart(2,'0');
 var data={workTasks:[],hobbyTasks:[],workToday:{},hobbyToday:{},records:{},settings:{workPtsPerHr:10,hobbyPtsPerCheck:5,hobbyMaxPerDay:20}};
 
@@ -158,21 +158,32 @@ async function loadFromGitHub(){
   }
 }
 
-var pendingSave=null;
+var pendingSave=null,saving=false;
+function saveSyncNow(){if(pendingSave){clearTimeout(pendingSave);pendingSave=null;doSave()}}
+async function doSave(){
+  if(saving||!token)return;saving=true;
+  document.getElementById('sync-status').textContent='saving...';
+  var json=JSON.stringify(data,null,2);localStorage.setItem('dt8',json);
+  try{
+    var content=btoa(unescape(encodeURIComponent(json)));
+    var body={message:'update '+DK,content:content};if(sha)body.sha=sha;
+    var resp=await fetch(API,{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(resp.status===409){
+      // conflict - re-fetch and retry
+      var f=await fetch(API,{headers:{Authorization:'Bearer '+token}});
+      if(f.ok){var fj=await f.json();sha=fj.sha;body.sha=sha;
+        var r2=await fetch(API,{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
+        if(r2.ok)sha=(await r2.json()).content.sha;
+      }
+    }else if(resp.ok){sha=(await resp.json()).content.sha;}
+    document.getElementById('sync-status').textContent='online';
+  }catch(e){document.getElementById('sync-status').textContent='offline'}
+  saving=false;
+}
 async function saveToGitHub(){
   if(!token)return;
-  var json=JSON.stringify(data,null,2);
-  localStorage.setItem('dt8',json);
   if(pendingSave)clearTimeout(pendingSave);
-  pendingSave=setTimeout(async function(){
-    try{
-      var content=btoa(unescape(encodeURIComponent(json)));
-      var body={message:'update '+DK,content:content};if(sha)body.sha=sha;
-      var resp=await fetch(API,{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
-      var j=await resp.json();sha=j.content.sha;
-      document.getElementById('sync-status').textContent='online';
-    }catch(e){document.getElementById('sync-status').textContent='offline'}
-  },800);
+  pendingSave=setTimeout(doSave,600);
 }
 
 function score(){
@@ -234,10 +245,11 @@ function checkMidnight(){
 }
 
 setInterval(checkMidnight,30000);
+window.addEventListener('beforeunload',function(){saveSyncNow()});
 document.addEventListener('visibilitychange',function(){if(!document.hidden){checkMidnight();if(token)loadFromGitHub().then(refreshAll)}});
 
 var toggleItem=function(id){data[DK][id]=!data[DK][id];var card=document.getElementById('card-'+id);if(card){if(data[DK][id])card.classList.add('done');else card.classList.remove('done')}saveToGitHub();updateToday();return false};
-var showPg=function(p){document.querySelectorAll('.pg').forEach(function(el){el.classList.remove('show')});document.getElementById(p).classList.add('show');document.querySelectorAll('.nav a').forEach(function(a){a.classList.remove('on')});document.getElementById('nav-'+p).classList.add('on');if(p==='today')updateToday();if(p==='history')renderHistory();if(p==='checkin'&&token){loadFromGitHub().then(refreshAll)};return false};
+var showPg=function(p){if(currentPg&&currentPg==='checkin'&&p!=='checkin')saveSyncNow();currentPg=p;document.querySelectorAll('.pg').forEach(function(el){el.classList.remove('show')});document.getElementById(p).classList.add('show');document.querySelectorAll('.nav a').forEach(function(a){a.classList.remove('on')});document.getElementById('nav-'+p).classList.add('on');if(p==='today')updateToday();if(p==='history')renderHistory();if(p==='checkin'&&token){loadFromGitHub().then(refreshAll)};return false};
 var showCat=function(c){document.querySelectorAll('#tabs a').forEach(function(a){a.classList.remove('on')});document.getElementById('tab-'+c).classList.add('on');document.querySelectorAll('[id^=cat-]').forEach(function(el){el.style.display='none'});document.getElementById('cat-'+c).style.display='block';if(c==='work')renderWork();if(c==='hobby')renderHobby();return false};
 
 var addWork=function(){var inp=document.getElementById('work-input');var bon=document.getElementById('work-bonus');var t=inp.value.trim();if(!t)return;var id='w_'+Date.now();data.workTasks.push({id:id,t:t,bonus:parseInt(bon.value)||20,done:false});data.workToday[id]={hours:0,done:false};inp.value='';saveToGitHub();updateToday();renderWork()};
