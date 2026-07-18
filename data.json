@@ -24,9 +24,9 @@
   "2026-07-18": {
     "sleep": true,
     "diet": true,
-    "workout": false,
+    "workout": true,
     "ent": false,
-    "jyh": false,
+    "jyh": true,
     "hyg": false,
     "fam": false,
     "world": false
