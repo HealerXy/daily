@@ -1,7 +1,19 @@
 {
-  "workTasks": [],
+  "workTasks": [
+    {
+      "id": "w_1784386196469",
+      "t": "学习ai 制作网站",
+      "bonus": 30,
+      "done": false
+    }
+  ],
   "hobbyTasks": [],
-  "workToday": {},
+  "workToday": {
+    "w_1784386196469": {
+      "hours": 0,
+      "done": false
+    }
+  },
   "hobbyToday": {},
   "records": {},
   "settings": {
