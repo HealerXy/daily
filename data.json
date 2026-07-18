@@ -91,10 +91,10 @@
     "sleep": true,
     "diet": true,
     "workout": true,
-    "ent": false,
-    "jyh": true,
-    "hyg": true,
-    "fam": true,
+    "ent": true,
+    "jyh": false,
+    "hyg": false,
+    "fam": false,
     "world": false
   }
 }
