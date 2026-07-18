@@ -71,7 +71,7 @@
       "done": false
     },
     "w_1784388485172": {
-      "hours": 2,
+      "hours": 3,
       "done": true
     }
   },
@@ -89,7 +89,7 @@
   },
   "2026-07-18": {
     "sleep": true,
-    "diet": false,
+    "diet": true,
     "workout": true,
     "ent": false,
     "jyh": true,
