@@ -88,7 +88,7 @@
     "hobbyMaxPerDay": 20
   },
   "2026-07-18": {
-    "sleep": false,
+    "sleep": true,
     "diet": false,
     "workout": false,
     "ent": false,
