@@ -80,7 +80,7 @@
   },
   "2026-07-19": {
     "sleep": true,
-    "diet": false,
+    "diet": true,
     "workout": false,
     "ent": false,
     "jyh": false,
