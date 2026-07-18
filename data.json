@@ -92,9 +92,9 @@
     "diet": true,
     "workout": true,
     "ent": false,
-    "jyh": false,
-    "hyg": false,
-    "fam": false,
+    "jyh": true,
+    "hyg": true,
+    "fam": true,
     "world": false
   }
 }
