@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>神迹</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#111;max-width:500px;margin:0 auto;min-height:100vh}
+header{padding:16px 20px;font-size:18px;font-weight:700;border-bottom:1px solid #e8e8e8}
+.tabs{display:flex;border-bottom:1px solid #e8e8e8}
+.tabs a{flex:1;padding:12px 0;text-align:center;font-size:14px;color:#888;text-decoration:none;cursor:pointer}
+.tabs a.on{color:#111;font-weight:600;border-bottom:2px solid #2563eb}
+.card{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;margin:8px 12px;background:#f7f7f7;border-radius:10px;border:1.5px solid transparent;gap:12px;cursor:pointer;user-select:none}
+.card:active{transform:scale(.98)}
+.card.done{border-color:#93bbfd;background:#eff6ff}
+.card .l{flex:1;font-size:15px}
+.card .p{font-size:12px;color:#888}
+.card .circle{width:26px;height:26px;border-radius:50%;border:2px solid #e5e5e5;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:transparent;transition:all .15s}
+.card.done .circle{background:#2563eb;border-color:#2563eb;color:#fff}
+.score{text-align:center;padding:20px 0 12px}
+.score .n{font-size:72px;font-weight:800;line-height:1}
+.score .u{font-size:20px;color:#888;font-weight:400}
+.nav{display:flex;border-top:1px solid #e8e8e8;position:fixed;bottom:0;left:0;right:0;max-width:500px;margin:0 auto;background:#fff;z-index:10}
+.nav a{flex:1;text-align:center;padding:10px 0 8px;font-size:11px;color:#888;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px}
+.nav a.on{color:#2563eb;font-weight:600}
+.nav a svg{width:22px;height:22px}
+.pg{display:none;padding-bottom:70px}
+.pg.show{display:block}
+.extra{font-size:13px;text-align:center;padding:2px 0 8px}
+.extra.over{color:#16a34a}
+.brk{padding:12px 16px 12px}
+.brk .row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#f7f7f7;border-radius:10px;margin-bottom:8px}
+.brk .row .cat{font-size:13px;font-weight:600;color:#888}
+.brk .row .val{font-size:16px;font-weight:700}
+.brk .row .det{font-size:12px;color:#888;margin-top:2px}
+</style>
+</head>
+<body>
+<header>神迹</header>
+
+<div id="checkin" class="pg show">
+  <div class="tabs" id="tabs">
+    <a class="on" id="tab-daily" onclick="showCat('daily');return false">日常</a>
+    <a id="tab-work" onclick="showCat('work');return false">工作</a>
+    <a id="tab-hobby" onclick="showCat('hobby');return false">爱好</a>
+  </div>
+  <div id="cat-daily"><div id="daily-list"></div></div>
+  <div id="cat-work" style="display:none"><div style="padding:40px 16px;text-align:center;color:#888">还没有工作项</div></div>
+  <div id="cat-hobby" style="display:none"><div style="padding:40px 16px;text-align:center;color:#888">还没有爱好项</div></div>
+</div>
+
+<div id="today" class="pg">
+  <div class="score"><span class="n" id="tscore">0</span><span class="u"> 分</span></div>
+  <div class="extra" id="textra"></div>
+  <div class="brk" id="today-brk"></div>
+</div>
+
+<div id="history" class="pg">
+  <div style="padding:40px 16px;text-align:center;color:#888">暂无记录</div>
+</div>
+
+<nav class="nav">
+  <a class="on" id="nav-checkin" onclick="showPg('checkin');return false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    打卡
+  </a>
+  <a id="nav-today" onclick="showPg('today');return false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    今日
+  </a>
+  <a id="nav-history" onclick="showPg('history');return false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    记录
+  </a>
+</nav>
+
+<script>
+var ITEMS=[
+  {id:'sleep',t:'你今天有好好睡觉吗？',s:12},
+  {id:'diet',t:'你今天有健康饮食吗？',s:12},
+  {id:'workout',t:'你今天完成健身计划了吗？',s:10},
+  {id:'ent',t:'你今天限制娱乐时间了吗？',s:10},
+  {id:'jyh',t:'你今天有理解金奕含吗？',s:11},
+  {id:'hyg',t:'你今天保持自身清洁了吗？',s:5},
+  {id:'fam',t:'你今天有理解家人朋友吗？',s:5},
+  {id:'world',t:'你今天有了解世界吗？',s:5}
+];
+var D=new Date();
+var DK=D.getFullYear()+'-'+String(D.getMonth()+1).padStart(2,'0')+'-'+String(D.getDate()).padStart(2,'0');
+var KEY='dt6';
+
+function load(){var r=localStorage.getItem(KEY);if(!r)return{};try{return JSON.parse(r)}catch(e){return{}}}
+function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
+
+var data=load();
+if(!data[DK])data[DK]={};
+ITEMS.forEach(function(it){if(!(it.id in data[DK]))data[DK][it.id]=false});
+save(data);
+
+function score(){var s=0;ITEMS.forEach(function(it){if(data[DK][it.id])s+=it.s});return s}
+
+function renderDaily(){
+  var h='';
+  ITEMS.forEach(function(it,i){
+    var done=data[DK][it.id];
+    h+='<div class="card'+(done?' done':'')+'" id="card-'+it.id+'" onclick="toggleItem(\''+it.id+'\')"><span class="l">'+it.t+' <span class="p">'+it.s+'分</span></span><div class="circle">&#10003;</div></div>';
+  });
+  document.getElementById('daily-list').innerHTML=h;
+  updateToday();
+}
+
+function updateToday(){
+  var s=score();
+  document.getElementById('tscore').textContent=s;
+  var e=document.getElementById('textra');
+  if(s>100){e.className='extra over';e.textContent='+'+(s-100)+' 超越期待';}
+  else if(s<100){e.className='extra';e.textContent='距基准还差 '+(100-s)+' 分';}
+  else{e.className='extra over';e.textContent='完美 100 分';}
+  // breakdown
+  var done=0;ITEMS.forEach(function(it){if(data[DK][it.id])done++});
+  var ds='';ITEMS.forEach(function(it){ds+='<span style="display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:3px;background:'+(data[DK][it.id]?'#2563eb':'#e5e5e5')+'"></span>'});
+  document.getElementById('today-brk').innerHTML='<div class="row"><div><div class="cat">日常</div><div class="det">'+done+'/'+ITEMS.length+' 已完成</div></div><div class="val">'+s+'/70</div></div><div style="font-size:12px;padding:4px 0 0 4px">'+ds+'</div>';
+}
+
+var toggleItem=function(id){
+  data[DK][id]=!data[DK][id];
+  save(data);
+  var card=document.getElementById('card-'+id);
+  if(card){
+    if(data[DK][id])card.classList.add('done');
+    else card.classList.remove('done');
+  }
+  updateToday();
+  return false;
+};
+
+var showPg=function(p){
+  document.querySelectorAll('.pg').forEach(function(el){el.classList.remove('show')});
+  document.getElementById(p).classList.add('show');
+  document.querySelectorAll('.nav a').forEach(function(a){a.classList.remove('on')});
+  document.getElementById('nav-'+p).classList.add('on');
+  if(p==='today')updateToday();
+  return false;
+};
+
+var showCat=function(c){
+  document.querySelectorAll('#tabs a').forEach(function(a){a.classList.remove('on')});
+  document.getElementById('tab-'+c).classList.add('on');
+  document.querySelectorAll('[id^=cat-]').forEach(function(el){el.style.display='none'});
+  document.getElementById('cat-'+c).style.display='block';
+  return false;
+};
+
+renderDaily();
+</script>
+</body>
+</html>
