@@ -5,6 +5,12 @@
       "t": "学习ai 制作网站",
       "bonus": 20,
       "done": false
+    },
+    {
+      "id": "w_1784388068484",
+      "t": "制作面试ppt",
+      "bonus": 20,
+      "done": false
     }
   ],
   "hobbyTasks": [],
@@ -12,6 +18,10 @@
     "w_1784387971604": {
       "hours": 3,
       "done": true
+    },
+    "w_1784388068484": {
+      "hours": 0,
+      "done": false
     }
   },
   "hobbyToday": {},
