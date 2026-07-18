@@ -71,7 +71,7 @@ header .sync{font-size:11px;color:#888;font-weight:400}
   </div>
 </div>
 
-<header>神迹 <span class="sync" id="sync-status"></span><span onclick="openSettings()" style="cursor:pointer;font-size:18px">&#9881;</span></header>
+<header>神迹 <span class="sync" id="sync-status"></span><span onclick="manualSync()" style="cursor:pointer;font-size:13px;color:var(--accent);margin-right:4px">sync</span><span onclick="openSettings()" style="cursor:pointer;font-size:18px">&#9881;</span></header>
 
 <div id="checkin" class="pg show">
   <div class="tabs" id="tabs">
@@ -239,7 +239,8 @@ function checkMidnight(){
 }
 
 setInterval(checkMidnight,30000);
-if(token)setInterval(function(){loadFromGitHub().then(function(r){if(r)refreshAll()})},10000);
+// Start polling regardless of token state
+setInterval(function(){if(token)loadFromGitHub().then(function(r){if(r)refreshAll()})},8000);
 window.addEventListener('beforeunload',function(){saveSyncNow()});
 document.addEventListener('visibilitychange',function(){if(!document.hidden){checkMidnight();saveSyncNow();if(token)loadFromGitHub().then(function(r){if(r)refreshAll()})}});
 
@@ -260,6 +261,7 @@ function esc(s){var d=document.createElement('div');d.textContent=s;return d.inn
 function refreshAll(){renderDaily();renderWork();renderHobby();renderHistory();updateToday()}
 
 // Token setup
+function manualSync(){if(!token)return;loadFromGitHub().then(function(r){if(r){refreshAll();toast('synced')}else{toast('sync failed')}})}
 function openSettings(){
   document.getElementById('setup').style.display='flex';
   document.getElementById('token-input').value=token||'';
