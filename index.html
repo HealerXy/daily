@@ -66,6 +66,8 @@ header .sync{font-size:11px;color:#888;font-weight:400}
     <h3>设置同步</h3>
     <p>粘贴你的 GitHub Personal Access Token（需要 public_repo 权限）</p>
     <input id="token-input" placeholder="ghp_...">
+    <input id="proxy-input" placeholder="代理地址（可选，国内用户看下面说明）" style="margin-bottom:8px">
+    <p style="font-size:11px;color:#999;margin-bottom:8px">api.github.com 被墙？填 <b>https://gh-proxy.com/</b> 或自建代理</p>
     <button onclick="saveToken()">保存并开始</button>
   </div>
 </div>
@@ -120,7 +122,7 @@ var ITEMS=[
   {id:'world',t:'你今天有了解世界吗？',s:5}
 ];
 var OWNER='HealerXy',REPO='daily',FILE='data.json';
-var API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+FILE;
+var proxy='';var API='';function buildAPI(){var base='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+FILE;API=(proxy?proxy:'')+base;return API}
 var sha=null,token=null;
 
 var currentPg='checkin';var D=new Date();
@@ -269,12 +271,15 @@ function saveToken(){
   var v=document.getElementById('token-input').value.trim();
   if(!v)return;
   token=v;localStorage.setItem('dt8_token',token);
+  var p=document.getElementById('proxy-input').value.trim();
+  if(p){proxy=p;localStorage.setItem('dt8_proxy',proxy)}
+  buildAPI();
   document.getElementById('setup').style.display='none';
   loadFromGitHub().then(function(){refreshAll()});
 }
 
 // Init
-var savedToken=localStorage.getItem('dt8_token');
+proxy=localStorage.getItem('dt8_proxy')||'';buildAPI();var savedToken=localStorage.getItem('dt8_token');
 if(savedToken){token=savedToken;loadFromGitHub().then(function(){refreshAll()})}
 else{document.getElementById('setup').style.display='flex'}
 
