@@ -29,6 +29,12 @@
       "t": "学习ai制作网页",
       "bonus": 20,
       "done": true
+    },
+    {
+      "id": "w_1784391934951",
+      "t": "学习ai制作网页",
+      "bonus": 20,
+      "done": false
     }
   ],
   "hobbyTasks": [
@@ -53,7 +59,12 @@
       "done": false
     }
   ],
-  "workToday": {},
+  "workToday": {
+    "w_1784391934951": {
+      "hours": 0,
+      "done": false
+    }
+  },
   "hobbyToday": {},
   "records": {
     "2026-07-18": {
