@@ -1,0 +1,22 @@
+{
+  "workTasks": [],
+  "hobbyTasks": [],
+  "workToday": {},
+  "hobbyToday": {},
+  "records": {},
+  "settings": {
+    "workPtsPerHr": 10,
+    "hobbyPtsPerCheck": 5,
+    "hobbyMaxPerDay": 20
+  },
+  "2026-07-18": {
+    "sleep": false,
+    "diet": false,
+    "workout": false,
+    "ent": false,
+    "jyh": false,
+    "hyg": false,
+    "fam": false,
+    "world": false
+  }
+}
