@@ -72,7 +72,7 @@ header .sync{font-size:11px;color:#888;font-weight:400}
   </div>
 </div>
 
-<header>神迹 <span class="sync" id="sync-status"></span></header>
+<header>神迹 <span class="sync" id="sync-status"></span><span onclick="openSettings()" style="cursor:pointer;font-size:18px">&#9881;</span></header>
 
 <div id="checkin" class="pg show">
   <div class="tabs" id="tabs">
@@ -267,6 +267,11 @@ function esc(s){var d=document.createElement('div');d.textContent=s;return d.inn
 function refreshAll(){renderDaily();renderWork();renderHobby();renderHistory();updateToday()}
 
 // Token setup
+function openSettings(){
+  document.getElementById('setup').style.display='flex';
+  document.getElementById('token-input').value=token||'';
+  document.getElementById('proxy-input').value=proxy||'';
+}
 function saveToken(){
   var v=document.getElementById('token-input').value.trim();
   if(!v)return;
