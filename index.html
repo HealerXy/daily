@@ -137,9 +137,9 @@ async function loadFromGitHub(){
     var resp=await fetch(API,{headers:{Authorization:'Bearer '+token}});
     if(!resp.ok){document.getElementById('sync-status').textContent='HTTP '+resp.status;return false}
     var j=await resp.json();sha=j.sha;
-    var raw=atob(j.content.replace(/\s/g,''));
+    var raw=decodeURIComponent(escape(atob(j.content.replace(/\s/g,''))));
     var remote=JSON.parse(raw);
-    if(remote&&remote.workTasks)data=remote;
+    if(remote&&remote.workTasks){var td=data[DK];data=remote;if(td)data[DK]=td}
     if(!data[DK])data[DK]={};ITEMS.forEach(function(it){if(!(it.id in data[DK]))data[DK][it.id]=false});
     if(!data.workTasks)data.workTasks=[];if(!data.hobbyTasks)data.hobbyTasks=[];
     if(!data.workToday)data.workToday={};if(!data.hobbyToday)data.hobbyToday={};
