@@ -17,6 +17,12 @@
       "t": "录课面试",
       "bonus": 20,
       "done": false
+    },
+    {
+      "id": "w_1784386244891",
+      "t": "规划研究方向 导师",
+      "bonus": 20,
+      "done": false
     }
   ],
   "hobbyTasks": [],
@@ -30,6 +36,10 @@
       "done": false
     },
     "w_1784386216613": {
+      "hours": 0,
+      "done": false
+    },
+    "w_1784386244891": {
       "hours": 0,
       "done": false
     }
