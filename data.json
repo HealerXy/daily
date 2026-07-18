@@ -11,6 +11,12 @@
       "t": "制作面试ppt",
       "bonus": 20,
       "done": false
+    },
+    {
+      "id": "w_1784386216613",
+      "t": "录课面试",
+      "bonus": 20,
+      "done": false
     }
   ],
   "hobbyTasks": [],
@@ -20,6 +26,10 @@
       "done": false
     },
     "w_1784386205910": {
+      "hours": 0,
+      "done": false
+    },
+    "w_1784386216613": {
       "hours": 0,
       "done": false
     }
