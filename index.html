@@ -5,39 +5,72 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>神迹</title>
 <style>
+:root{--accent:#2563eb;--bg2:#f7f7f7;--border:#e5e5e5}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#111;max-width:500px;margin:0 auto;min-height:100vh}
-header{padding:16px 20px;font-size:18px;font-weight:700;border-bottom:1px solid #e8e8e8}
-.tabs{display:flex;border-bottom:1px solid #e8e8e8}
+header{padding:14px 20px;font-size:18px;font-weight:700;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+header .sync{font-size:11px;color:#888;font-weight:400}
+.tabs{display:flex;border-bottom:1px solid var(--border)}
 .tabs a{flex:1;padding:12px 0;text-align:center;font-size:14px;color:#888;text-decoration:none;cursor:pointer}
-.tabs a.on{color:#111;font-weight:600;border-bottom:2px solid #2563eb}
-.card{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;margin:8px 12px;background:#f7f7f7;border-radius:10px;border:1.5px solid transparent;gap:12px;cursor:pointer;user-select:none}
+.tabs a.on{color:#111;font-weight:600;border-bottom:2px solid var(--accent)}
+.card{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;margin:8px 12px;background:var(--bg2);border-radius:10px;border:1.5px solid transparent;gap:12px;cursor:pointer;user-select:none}
 .card:active{transform:scale(.98)}
 .card.done{border-color:#93bbfd;background:#eff6ff}
 .card .l{flex:1;font-size:15px}
 .card .p{font-size:12px;color:#888}
-.card .circle{width:26px;height:26px;border-radius:50%;border:2px solid #e5e5e5;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:transparent;transition:all .15s}
-.card.done .circle{background:#2563eb;border-color:#2563eb;color:#fff}
+.card .circle{width:26px;height:26px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:transparent;transition:all .15s}
+.card.done .circle{background:var(--accent);border-color:var(--accent);color:#fff}
 .score{text-align:center;padding:20px 0 12px}
 .score .n{font-size:72px;font-weight:800;line-height:1}
-.score .u{font-size:20px;color:#888;font-weight:400}
-.nav{display:flex;border-top:1px solid #e8e8e8;position:fixed;bottom:0;left:0;right:0;max-width:500px;margin:0 auto;background:#fff;z-index:10}
+.score .u{font-size:20px;color:#888;font-weight:400;margin-left:4px}
+.nav{display:flex;border-top:1px solid var(--border);position:fixed;bottom:0;left:0;right:0;max-width:500px;margin:0 auto;background:#fff;z-index:10}
 .nav a{flex:1;text-align:center;padding:10px 0 8px;font-size:11px;color:#888;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px}
-.nav a.on{color:#2563eb;font-weight:600}
+.nav a.on{color:var(--accent);font-weight:600}
 .nav a svg{width:22px;height:22px}
 .pg{display:none;padding-bottom:70px}
 .pg.show{display:block}
 .extra{font-size:13px;text-align:center;padding:2px 0 8px}
 .extra.over{color:#16a34a}
-.brk{padding:12px 16px 12px}
-.brk .row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#f7f7f7;border-radius:10px;margin-bottom:8px}
+.brk{padding:12px 16px}
+.brk .row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--bg2);border-radius:10px;margin-bottom:8px}
 .brk .row .cat{font-size:13px;font-weight:600;color:#888}
 .brk .row .val{font-size:16px;font-weight:700}
 .brk .row .det{font-size:12px;color:#888;margin-top:2px}
+.add-row{display:flex;gap:8px;padding:0 12px 8px;margin-top:4px}
+.add-row input{flex:1;padding:10px 12px;border:1px dashed var(--border);border-radius:10px;font-size:14px;outline:none;background:#fff}
+.add-row input:focus{border-color:var(--accent);border-style:solid}
+.add-row button{padding:10px 16px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.add-row .bonus-input{width:60px;padding:10px 8px;text-align:center}
+.del-cross{font-size:13px;color:#ccc;cursor:pointer;margin-left:4px;padding:2px 4px}
+.del-cross:hover{color:#ef4444}
+.btn-sm{padding:8px 14px;font-size:12px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer}
+.btn-sm.done-bg{background:#16a34a}
+.hobby-ctr{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.hobby-ctr button{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border);background:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.hobby-ctr .cnt{font-size:16px;font-weight:600;min-width:20px;text-align:center}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:8px 16px;border-radius:20px;font-size:12px;z-index:99;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.setup-box{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:200}
+.setup-box .inner{background:#fff;border-radius:16px;padding:24px 20px;width:90%;max-width:360px}
+.setup-box .inner h3{font-size:16px;margin-bottom:12px}
+.setup-box .inner p{font-size:13px;color:#888;margin-bottom:12px}
+.setup-box .inner input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;outline:none;margin-bottom:12px}
+.setup-box .inner input:focus{border-color:var(--accent)}
+.setup-box .inner button{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer}
 </style>
 </head>
 <body>
-<header>神迹</header>
+<div class="toast" id="toast"></div>
+<div class="setup-box" id="setup" style="display:none">
+  <div class="inner">
+    <h3>设置同步</h3>
+    <p>粘贴你的 GitHub Personal Access Token（需要 public_repo 权限）</p>
+    <input id="token-input" placeholder="ghp_...">
+    <button onclick="saveToken()">保存并开始</button>
+  </div>
+</div>
+
+<header>神迹 <span class="sync" id="sync-status"></span></header>
 
 <div id="checkin" class="pg show">
   <div class="tabs" id="tabs">
@@ -46,18 +79,18 @@ header{padding:16px 20px;font-size:18px;font-weight:700;border-bottom:1px solid 
     <a id="tab-hobby" onclick="showCat('hobby');return false">爱好</a>
   </div>
   <div id="cat-daily"><div id="daily-list"></div></div>
-  <div id="cat-work" style="display:none"><div style="padding:40px 16px;text-align:center;color:#888">还没有工作项</div></div>
-  <div id="cat-hobby" style="display:none"><div style="padding:40px 16px;text-align:center;color:#888">还没有爱好项</div></div>
+  <div id="cat-work" style="display:none"><div id="work-list"></div></div>
+  <div id="cat-hobby" style="display:none"><div id="hobby-list"></div></div>
 </div>
 
 <div id="today" class="pg">
-  <div class="score"><span class="n" id="tscore">0</span><span class="u"> 分</span></div>
+  <div class="score"><span class="n" id="tscore">0</span><span class="u">分</span></div>
   <div class="extra" id="textra"></div>
   <div class="brk" id="today-brk"></div>
 </div>
 
 <div id="history" class="pg">
-  <div style="padding:40px 16px;text-align:center;color:#888">暂无记录</div>
+  <div id="hist-list" style="padding:12px 16px"></div>
 </div>
 
 <nav class="nav">
@@ -86,73 +119,160 @@ var ITEMS=[
   {id:'fam',t:'你今天有理解家人朋友吗？',s:5},
   {id:'world',t:'你今天有了解世界吗？',s:5}
 ];
+var OWNER='HealerXy',REPO='daily',FILE='data.json';
+var API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+FILE;
+var sha=null,token=null;
+
 var D=new Date();
 var DK=D.getFullYear()+'-'+String(D.getMonth()+1).padStart(2,'0')+'-'+String(D.getDate()).padStart(2,'0');
-var KEY='dt6';
+var data={workTasks:[],hobbyTasks:[],workToday:{},hobbyToday:{},records:{},settings:{workPtsPerHr:10,hobbyPtsPerCheck:5,hobbyMaxPerDay:20}};
 
-function load(){var r=localStorage.getItem(KEY);if(!r)return{};try{return JSON.parse(r)}catch(e){return{}}}
-function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2000)}
 
-var data=load();
-if(!data[DK])data[DK]={};
-ITEMS.forEach(function(it){if(!(it.id in data[DK]))data[DK][it.id]=false});
-save(data);
+async function loadFromGitHub(){
+  if(!token)return false;
+  document.getElementById('sync-status').textContent='sync...';
+  try{
+    var resp=await fetch(API,{headers:{Authorization:'Bearer '+token}});
+    if(!resp.ok)throw new Error(resp.status);
+    var j=await resp.json();sha=j.sha;
+    var raw=atob(j.content.replace(/\s/g,''));
+    var remote=JSON.parse(raw);
+    if(remote&&remote.workTasks)data=remote;
+    if(!data[DK])data[DK]={};ITEMS.forEach(function(it){if(!(it.id in data[DK]))data[DK][it.id]=false});
+    if(!data.workTasks)data.workTasks=[];if(!data.hobbyTasks)data.hobbyTasks=[];
+    if(!data.workToday)data.workToday={};if(!data.hobbyToday)data.hobbyToday={};
+    if(!data.records)data.records={};if(!data.settings)data.settings={workPtsPerHr:10,hobbyPtsPerCheck:5,hobbyMaxPerDay:20};
+    document.getElementById('sync-status').textContent='online';
+    localStorage.setItem('dt8',JSON.stringify(data));
+    return true;
+  }catch(e){
+    console.log(e.message);
+    document.getElementById('sync-status').textContent='offline';
+    var l=localStorage.getItem('dt8');if(l)try{data=JSON.parse(l)}catch(ex){}
+    if(!data[DK])data[DK]={};ITEMS.forEach(function(it){if(!(it.id in data[DK]))data[DK][it.id]=false});
+    if(!data.workTasks)data.workTasks=[];if(!data.hobbyTasks)data.hobbyTasks=[];
+    if(!data.workToday)data.workToday={};if(!data.hobbyToday)data.hobbyToday={};
+    if(!data.records)data.records={};if(!data.settings)data.settings={workPtsPerHr:10,hobbyPtsPerCheck:5,hobbyMaxPerDay:20};
+    return false;
+  }
+}
 
-function score(){var s=0;ITEMS.forEach(function(it){if(data[DK][it.id])s+=it.s});return s}
+var pendingSave=null;
+async function saveToGitHub(){
+  if(!token)return;
+  var json=JSON.stringify(data,null,2);
+  localStorage.setItem('dt8',json);
+  if(pendingSave)clearTimeout(pendingSave);
+  pendingSave=setTimeout(async function(){
+    try{
+      var content=btoa(unescape(encodeURIComponent(json)));
+      var body={message:'update '+DK,content:content};if(sha)body.sha=sha;
+      var resp=await fetch(API,{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
+      var j=await resp.json();sha=j.content.sha;
+      document.getElementById('sync-status').textContent='online';
+    }catch(e){document.getElementById('sync-status').textContent='offline'}
+  },800);
+}
+
+function score(){
+  var s=0;ITEMS.forEach(function(it){if(data[DK][it.id])s+=it.s});
+  Object.keys(data.workToday||{}).forEach(function(tid){var w=data.workToday[tid];s+=(w.hours||0)*data.settings.workPtsPerHr;if(w.done){var t=data.workTasks.find(function(x){return x.id===tid});if(t)s+=(t.bonus||20)}});
+  var hc=0;Object.keys(data.hobbyToday||{}).forEach(function(tid){hc+=(data.hobbyToday[tid]||0)});
+  s+=Math.min(hc*data.settings.hobbyPtsPerCheck,data.settings.hobbyMaxPerDay);return s;
+}
 
 function renderDaily(){
-  var h='';
-  ITEMS.forEach(function(it,i){
-    var done=data[DK][it.id];
-    h+='<div class="card'+(done?' done':'')+'" id="card-'+it.id+'" onclick="toggleItem(\''+it.id+'\')"><span class="l">'+it.t+' <span class="p">'+it.s+'分</span></span><div class="circle">&#10003;</div></div>';
-  });
-  document.getElementById('daily-list').innerHTML=h;
-  updateToday();
+  var h='';ITEMS.forEach(function(it){var done=data[DK][it.id];h+='<div class="card'+(done?' done':'')+'" id="card-'+it.id+'" onclick="toggleItem(\''+it.id+'\')"><span class="l">'+it.t+' <span class="p">'+it.s+'分</span></span><div class="circle">&#10003;</div></div>'});
+  document.getElementById('daily-list').innerHTML=h;updateToday();
+}
+
+function renderWork(){
+  var tasks=data.workTasks.filter(function(t){return !t.done});var h='';
+  tasks.forEach(function(t){var w=data.workToday[t.id]||{hours:0,done:false};h+='<div class="card" style="flex-direction:column;align-items:stretch;padding:12px 14px;cursor:default;gap:8px"><div style="display:flex;justify-content:space-between;align-items:center"><span class="l" style="font-weight:500">'+esc(t.t)+'</span><span class="del-cross" onclick="delWork(\''+t.id+'\')">&times;</span></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><input type="number" min="0" max="24" step="0.5" value="'+w.hours+'" onchange="setHours(\''+t.id+'\',this.value)" style="width:70px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:14px;text-align:center;outline:none"><span style="font-size:12px;color:#888">小时</span>'+(w.done?'<span style="font-size:12px;color:#16a34a;font-weight:600">&#10003; 已完成 +'+(t.bonus||20)+'分</span>':'<button onclick="completeWork(\''+t.id+'\')" class="btn-sm">完成 +'+(t.bonus||20)+'分</button>')+'</div></div>'});
+  h+='<div class="add-row"><input id="work-input" placeholder="新工作任务..."><input id="work-bonus" class="bonus-input" type="number" value="20"><button onclick="addWork()">添加</button></div>';
+  document.getElementById('work-list').innerHTML=h||'<div style="padding:40px 16px;text-align:center;color:#888">还没有工作项</div>';
+}
+
+function renderHobby(){
+  var tasks=data.hobbyTasks.filter(function(t){return !t.done});var allChecks=0;Object.keys(data.hobbyToday).forEach(function(k){allChecks+=data.hobbyToday[k]});
+  var maxChecks=Math.floor(data.settings.hobbyMaxPerDay/data.settings.hobbyPtsPerCheck);var h='';
+  tasks.forEach(function(t){var cnt=data.hobbyToday[t.id]||0;h+='<div class="card" style="cursor:default"><span class="l">'+esc(t.t)+'</span><div style="display:flex;align-items:center;gap:6px"><div class="hobby-ctr"><button onclick="hobbyDec(\''+t.id+'\')">&#8722;</button><span class="cnt">'+cnt+'</span><button onclick="hobbyInc(\''+t.id+'\')">+</button></div><span class="del-cross" onclick="delHobby(\''+t.id+'\')">&times;</span></div></div>'});
+  h+='<div style="font-size:12px;color:#888;padding:0 14px 6px">今日 '+allChecks+'/'+maxChecks+' 次，每次 +'+data.settings.hobbyPtsPerCheck+' 分</div>';
+  h+='<div class="add-row"><input id="hobby-input" placeholder="新爱好..."><button onclick="addHobby()">添加</button></div>';
+  document.getElementById('hobby-list').innerHTML=h||'<div style="padding:40px 16px;text-align:center;color:#888">还没有爱好项</div>';
+}
+
+function renderHistory(){
+  var dates=Object.keys(data.records||{}).sort().reverse();
+  if(!dates.length){document.getElementById('hist-list').innerHTML='<div style="padding:40px 16px;text-align:center;color:#888">暂无记录</div>';return}
+  var h='';dates.forEach(function(d){var r=data.records[d];h+='<div style="background:var(--bg2);border-radius:10px;margin-bottom:8px"><div style="padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between" onclick="var n=this.nextElementSibling;n.style.display=n.style.display===\'none\'?\'block\':\'none\'"><span style="font-weight:600">'+d+'</span><span style="font-weight:700">'+r.total+' 分</span></div><div style="display:none;padding:0 16px 14px;font-size:13px;color:#888;line-height:1.6">日常 '+r.daily+'/70<br>工作 '+r.work+' 分<br>爱好 '+r.hobby+'/'+data.settings.hobbyMaxPerDay+' 分</div></div>'});
+  document.getElementById('hist-list').innerHTML=h;
 }
 
 function updateToday(){
-  var s=score();
-  document.getElementById('tscore').textContent=s;
+  var s=score();document.getElementById('tscore').textContent=s;
   var e=document.getElementById('textra');
-  if(s>100){e.className='extra over';e.textContent='+'+(s-100)+' 超越期待';}
-  else if(s<100){e.className='extra';e.textContent='距基准还差 '+(100-s)+' 分';}
-  else{e.className='extra over';e.textContent='完美 100 分';}
-  // breakdown
-  var done=0;ITEMS.forEach(function(it){if(data[DK][it.id])done++});
-  var ds='';ITEMS.forEach(function(it){ds+='<span style="display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:3px;background:'+(data[DK][it.id]?'#2563eb':'#e5e5e5')+'"></span>'});
-  document.getElementById('today-brk').innerHTML='<div class="row"><div><div class="cat">日常</div><div class="det">'+done+'/'+ITEMS.length+' 已完成</div></div><div class="val">'+s+'/70</div></div><div style="font-size:12px;padding:4px 0 0 4px">'+ds+'</div>';
+  if(s>100){e.className='extra over';e.textContent='+'+(s-100)+' 超越期待'}
+  else if(s<100){e.className='extra';e.textContent='距基准还差 '+(100-s)+' 分'}
+  else{e.className='extra over';e.textContent='完美 100 分'}
+  var done=0;ITEMS.forEach(function(it){if(data[DK][it.id])done++});var ds='';ITEMS.forEach(function(it){ds+='<span style="display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:3px;background:'+(data[DK][it.id]?'#2563eb':'#e5e5e5')+'"></span>'});
+  var dailySc=0;ITEMS.forEach(function(it){if(data[DK][it.id])dailySc+=it.s});
+  document.getElementById('today-brk').innerHTML='<div class="row"><div><div class="cat">日常</div><div class="det">'+done+'/'+ITEMS.length+' 已完成</div></div><div class="val">'+dailySc+'/70</div></div><div style="font-size:12px;padding:4px 0 0 4px">'+ds+'</div>';
 }
 
-var toggleItem=function(id){
-  data[DK][id]=!data[DK][id];
-  save(data);
-  var card=document.getElementById('card-'+id);
-  if(card){
-    if(data[DK][id])card.classList.add('done');
-    else card.classList.remove('done');
-  }
-  updateToday();
-  return false;
-};
+function checkMidnight(){
+  var nd=(function(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')})();
+  if(nd===DK)return;
+  var sc=score();var rec={daily:0,work:0,hobby:0,total:sc};
+  ITEMS.forEach(function(it){if(data[DK][it.id])rec.daily+=it.s});
+  Object.keys(data.workToday).forEach(function(tid){var w=data.workToday[tid];rec.work+=(w.hours||0)*data.settings.workPtsPerHr;if(w.done){var t=data.workTasks.find(function(x){return x.id===tid});if(t){rec.work+=(t.bonus||20);t.done=true}}});
+  var hc=0;Object.keys(data.hobbyToday).forEach(function(k){hc+=data.hobbyToday[k]});
+  rec.hobby=Math.min(hc*data.settings.hobbyPtsPerCheck,data.settings.hobbyMaxPerDay);
+  data.records[DK]=rec;data[DK]={};ITEMS.forEach(function(it){data[DK][it.id]=false});
+  data.workToday={};data.hobbyToday={};DK=nd;saveToGitHub();refreshAll();
+}
 
-var showPg=function(p){
-  document.querySelectorAll('.pg').forEach(function(el){el.classList.remove('show')});
-  document.getElementById(p).classList.add('show');
-  document.querySelectorAll('.nav a').forEach(function(a){a.classList.remove('on')});
-  document.getElementById('nav-'+p).classList.add('on');
-  if(p==='today')updateToday();
-  return false;
-};
+setInterval(checkMidnight,30000);
+document.addEventListener('visibilitychange',function(){if(!document.hidden){checkMidnight();if(token)loadFromGitHub().then(refreshAll)}});
 
-var showCat=function(c){
-  document.querySelectorAll('#tabs a').forEach(function(a){a.classList.remove('on')});
-  document.getElementById('tab-'+c).classList.add('on');
-  document.querySelectorAll('[id^=cat-]').forEach(function(el){el.style.display='none'});
-  document.getElementById('cat-'+c).style.display='block';
-  return false;
-};
+var toggleItem=function(id){data[DK][id]=!data[DK][id];var card=document.getElementById('card-'+id);if(card){if(data[DK][id])card.classList.add('done');else card.classList.remove('done')}saveToGitHub();updateToday();return false};
+var showPg=function(p){document.querySelectorAll('.pg').forEach(function(el){el.classList.remove('show')});document.getElementById(p).classList.add('show');document.querySelectorAll('.nav a').forEach(function(a){a.classList.remove('on')});document.getElementById('nav-'+p).classList.add('on');if(p==='today')updateToday();if(p==='history')renderHistory();if(p==='checkin'&&token){loadFromGitHub().then(refreshAll)};return false};
+var showCat=function(c){document.querySelectorAll('#tabs a').forEach(function(a){a.classList.remove('on')});document.getElementById('tab-'+c).classList.add('on');document.querySelectorAll('[id^=cat-]').forEach(function(el){el.style.display='none'});document.getElementById('cat-'+c).style.display='block';if(c==='work')renderWork();if(c==='hobby')renderHobby();return false};
 
-renderDaily();
+var addWork=function(){var inp=document.getElementById('work-input');var bon=document.getElementById('work-bonus');var t=inp.value.trim();if(!t)return;var id='w_'+Date.now();data.workTasks.push({id:id,t:t,bonus:parseInt(bon.value)||20,done:false});data.workToday[id]={hours:0,done:false};inp.value='';saveToGitHub();updateToday();renderWork()};
+var addHobby=function(){var inp=document.getElementById('hobby-input');var t=inp.value.trim();if(!t)return;var id='h_'+Date.now();data.hobbyTasks.push({id:id,t:t,done:false});data.hobbyToday[id]=0;inp.value='';saveToGitHub();updateToday();renderHobby()};
+var delWork=function(id){data.workTasks=data.workTasks.filter(function(t){return t.id!==id});delete data.workToday[id];saveToGitHub();updateToday();renderWork()};
+var delHobby=function(id){data.hobbyTasks=data.hobbyTasks.filter(function(t){return t.id!==id});delete data.hobbyToday[id];saveToGitHub();updateToday();renderHobby()};
+var setHours=function(id,v){var h=parseFloat(v)||0;if(!data.workToday[id])data.workToday[id]={hours:0,done:false};data.workToday[id].hours=Math.max(0,h);saveToGitHub();updateToday()};
+var completeWork=function(id){if(!data.workToday[id])data.workToday[id]={hours:0,done:false};data.workToday[id].done=true;saveToGitHub();updateToday();renderWork()};
+var hobbyInc=function(id){var cur=data.hobbyToday[id]||0;var all=0;Object.keys(data.hobbyToday).forEach(function(k){all+=data.hobbyToday[k]});var mx=Math.floor(data.settings.hobbyMaxPerDay/data.settings.hobbyPtsPerCheck);if(all>=mx)return;data.hobbyToday[id]=cur+1;saveToGitHub();updateToday();renderHobby()};
+var hobbyDec=function(id){var cur=data.hobbyToday[id]||0;if(cur<=0)return;data.hobbyToday[id]=cur-1;saveToGitHub();updateToday();renderHobby()};
+
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function refreshAll(){renderDaily();renderWork();renderHobby();renderHistory();updateToday()}
+
+// Token setup
+function saveToken(){
+  var v=document.getElementById('token-input').value.trim();
+  if(!v)return;
+  token=v;localStorage.setItem('dt8_token',token);
+  document.getElementById('setup').style.display='none';
+  loadFromGitHub().then(function(){refreshAll()});
+}
+
+// Init
+var savedToken=localStorage.getItem('dt8_token');
+if(savedToken){token=savedToken;loadFromGitHub().then(function(){refreshAll()})}
+else{document.getElementById('setup').style.display='flex'}
+
+// Also load local data immediately for fast start
+(function(){var l=localStorage.getItem('dt8');if(l)try{var d=JSON.parse(l);if(d&&d.workTasks)data=d}catch(ex){}
+if(!data[DK])data[DK]={};ITEMS.forEach(function(it){if(!(it.id in data[DK]))data[DK][it.id]=false});
+if(!data.workTasks)data.workTasks=[];if(!data.hobbyTasks)data.hobbyTasks=[];
+if(!data.workToday)data.workToday={};if(!data.hobbyToday)data.hobbyToday={};
+if(!data.records)data.records={};if(!data.settings)data.settings={workPtsPerHr:10,hobbyPtsPerCheck:5,hobbyMaxPerDay:20};
+refreshAll()})();
 </script>
 </body>
 </html>
