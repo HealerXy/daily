@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -161,7 +161,7 @@ async function loadFromGitHub(){
 var pendingSave=null,saving=false;
 function saveSyncNow(){if(pendingSave){clearTimeout(pendingSave);pendingSave=null;doSave()}}
 async function doSave(){
-  if(saving||!token)return;saving=true;
+  if(!token)return;
   document.getElementById('sync-status').textContent='saving...';
   var json=JSON.stringify(data,null,2);localStorage.setItem('dt8',json);
   try{
