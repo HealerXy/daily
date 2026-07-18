@@ -144,7 +144,7 @@ async function loadFromGitHub(){
     if(!data.workTasks)data.workTasks=[];if(!data.hobbyTasks)data.hobbyTasks=[];
     if(!data.workToday)data.workToday={};if(!data.hobbyToday)data.hobbyToday={};
     if(!data.records)data.records={};if(!data.settings)data.settings={workPtsPerHr:10,hobbyPtsPerCheck:5,hobbyMaxPerDay:20};
-    document.getElementById('sync-status').textContent='online';
+    var rc=0;try{ITEMS.forEach(function(it){if(data[DK]&&data[DK][it.id])rc++})}catch(e){};document.getElementById('sync-status').textContent='ok '+rc+'/'+ITEMS.length;
     localStorage.setItem('dt8',JSON.stringify(data));
     return true;
   }catch(e){
