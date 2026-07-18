@@ -27,8 +27,8 @@
     "workout": true,
     "ent": false,
     "jyh": true,
-    "hyg": false,
-    "fam": false,
+    "hyg": true,
+    "fam": true,
     "world": false
   }
 }
