@@ -17,6 +17,12 @@
       "t": "完成面试录课",
       "bonus": 20,
       "done": false
+    },
+    {
+      "id": "w_1784388113487",
+      "t": "了解并选择研究生导师及研究方向",
+      "bonus": 20,
+      "done": false
     }
   ],
   "hobbyTasks": [],
@@ -30,6 +36,10 @@
       "done": false
     },
     "w_1784388076453": {
+      "hours": 0,
+      "done": false
+    },
+    "w_1784388113487": {
       "hours": 0,
       "done": false
     }
