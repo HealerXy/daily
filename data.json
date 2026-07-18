@@ -23,6 +23,12 @@
       "t": "了解并选择研究生导师及研究方向",
       "bonus": 30,
       "done": false
+    },
+    {
+      "id": "w_1784388476500",
+      "t": "学习ai制作网页",
+      "bonus": 20,
+      "done": false
     }
   ],
   "hobbyTasks": [
@@ -63,6 +69,10 @@
     "w_1784388144979": {
       "hours": 0,
       "done": false
+    },
+    "w_1784388476500": {
+      "hours": 0,
+      "done": false
     }
   },
   "hobbyToday": {
@@ -78,13 +88,13 @@
     "hobbyMaxPerDay": 20
   },
   "2026-07-18": {
-    "sleep": false,
-    "diet": false,
-    "workout": false,
+    "sleep": true,
+    "diet": true,
+    "workout": true,
     "ent": false,
-    "jyh": false,
-    "hyg": false,
-    "fam": false,
+    "jyh": true,
+    "hyg": true,
+    "fam": true,
     "world": false
   }
 }
