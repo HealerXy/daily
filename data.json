@@ -89,12 +89,12 @@
   },
   "2026-07-18": {
     "sleep": true,
-    "diet": true,
-    "workout": true,
+    "diet": false,
+    "workout": false,
     "ent": false,
-    "jyh": true,
-    "hyg": true,
-    "fam": true,
+    "jyh": false,
+    "hyg": false,
+    "fam": false,
     "world": false
   }
 }
