@@ -23,6 +23,12 @@
       "t": "了解并选择研究生导师及研究方向",
       "bonus": 30,
       "done": false
+    },
+    {
+      "id": "w_1784388485172",
+      "t": "学习ai制作网页",
+      "bonus": 20,
+      "done": false
     }
   ],
   "hobbyTasks": [
@@ -61,6 +67,10 @@
       "done": false
     },
     "w_1784388144979": {
+      "hours": 0,
+      "done": false
+    },
+    "w_1784388485172": {
       "hours": 0,
       "done": false
     }
