@@ -96,7 +96,7 @@
     "ent": false,
     "jyh": true,
     "hyg": false,
-    "fam": false,
+    "fam": true,
     "world": false
   }
 }
