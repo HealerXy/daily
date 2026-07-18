@@ -170,8 +170,7 @@ async function doSave(){
     var resp=await fetch(API,{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
     if(resp.status===409){var f=await fetch(API,{headers:{Authorization:'Bearer '+token}});if(f.ok){var fj=await f.json();sha=fj.sha;body.sha=sha;var r2=await fetch(API,{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});if(r2.ok)sha=(await r2.json()).content.sha}}
     else if(resp.ok){sha=(await resp.json()).content.sha;}
-    document.getElementById('sync-status').textContent='online';
-  }catch(e){document.getElementById('sync-status').textContent='err:'+e.message.slice(0,15)}
+    var dDone=0;ITEMS.forEach(function(it){if(data[DK]&&data[DK][it.id])dDone++});toast("saved "+dDone+"/"+ITEMS.length);document.getElementById('sync-status').textContent='online';}catch(e){document.getElementById('sync-status').textContent='err:'+e.message.slice(0,15)}
   saving=false;
 }
 async function saveToGitHub(){
