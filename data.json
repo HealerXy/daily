@@ -2,19 +2,19 @@
   "workTasks": [
     {
       "id": "w_1784386196469",
-      "t": "学习ai 制作网站",
+      "t": "å­¦ä¹ ai å¶ä½ç½ç«",
       "bonus": 30,
       "done": false
     },
     {
       "id": "w_1784386205910",
-      "t": "制作面试ppt",
+      "t": "å¶ä½é¢è¯ppt",
       "bonus": 20,
       "done": false
     },
     {
       "id": "w_1784386216613",
-      "t": "录课面试",
+      "t": "å½è¯¾é¢è¯",
       "bonus": 20,
       "done": false
     }
@@ -42,13 +42,13 @@
     "hobbyMaxPerDay": 20
   },
   "2026-07-18": {
-    "sleep": true,
-    "diet": true,
-    "workout": true,
-    "ent": true,
-    "jyh": true,
-    "hyg": true,
-    "fam": true,
-    "world": true
+    "sleep": false,
+    "diet": false,
+    "workout": false,
+    "ent": false,
+    "jyh": false,
+    "hyg": false,
+    "fam": false,
+    "world": false
   }
 }
