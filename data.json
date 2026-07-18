@@ -13,10 +13,10 @@
     "sleep": true,
     "diet": true,
     "workout": true,
-    "ent": false,
-    "jyh": false,
-    "hyg": false,
-    "fam": false,
+    "ent": true,
+    "jyh": true,
+    "hyg": true,
+    "fam": true,
     "world": false
   }
 }
