@@ -31,7 +31,13 @@
       "done": false
     }
   ],
-  "hobbyTasks": [],
+  "hobbyTasks": [
+    {
+      "id": "h_1784388162461",
+      "t": "看电影",
+      "done": false
+    }
+  ],
   "workToday": {
     "w_1784387971604": {
       "hours": 3,
@@ -54,7 +60,9 @@
       "done": false
     }
   },
-  "hobbyToday": {},
+  "hobbyToday": {
+    "h_1784388162461": 0
+  },
   "records": {},
   "settings": {
     "workPtsPerHr": 10,
