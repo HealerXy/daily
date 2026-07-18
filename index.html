@@ -210,11 +210,25 @@ function renderHobby(){
 function renderHistory(){
   var dates=Object.keys(data.records||{}).sort().reverse();
   if(!dates.length){document.getElementById('hist-list').innerHTML='<div style="padding:40px 16px;text-align:center;color:#888">暂无记录</div>';return}
-  var h='';dates.forEach(function(d){var r=data.records[d];h+='<div style="background:var(--bg2);border-radius:10px;margin-bottom:8px"><div style="padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between" onclick="var n=this.nextElementSibling;n.style.display=n.style.display===\'none\'?\'block\':\'none\'"><span style="font-weight:600">'+d+'</span><span style="font-weight:700">'+r.total+' 分</span></div><div style="display:none;padding:0 16px 14px;font-size:13px;color:#888;line-height:1.6">"+r.daily+'/'+70+'<br>'+(r.dailyItems||[]).map(function(i){return (i.done?'&#10003;':'&#10007;')+' '+i.label+' ('+i.points+'pt)'}).join('<br>')+'<br><b>Work '+r.work+'</b><br>'+(r.workItems||[]).map(function(w){return w.title+' '+w.hours+'h'+(w.completed?' done':'');}).join('<br>')+'<br><b>Hobby '+r.hobby+'/'+data.settings.hobbyMaxPerDay+'</b><br>'+(r.hobbyItems||[]).map(function(h){return h.count>0?h.title+' '+h.count+'x':''}).join('<br>')+"</div></div>'});
+  var h='';
+  dates.forEach(function(d){
+    var r=data.records[d];
+    var dh='';
+    // daily items
+    dh+='<b>日常 '+r.daily+'/70</b><br>';
+    if(r.dailyItems){r.dailyItems.forEach(function(i){dh+=(i.done?'&#10003;':'&#10007;')+' '+i.label+' ('+i.points+'分)<br>'})}
+    // work items
+    dh+='<b>工作 '+r.work+' 分</b><br>';
+    if(r.workItems&&r.workItems.length){r.workItems.forEach(function(w){dh+=w.title+' '+w.hours+'h'+(w.completed?' 完成':'')+'<br>'})}else{dh+='暂无<br>'}
+    // hobby items
+    dh+='<b>爱好 '+r.hobby+'/'+data.settings.hobbyMaxPerDay+' 分</b><br>';
+    if(r.hobbyItems&&r.hobbyItems.length){r.hobbyItems.forEach(function(k){if(k.count>0)dh+=k.title+' '+k.count+'次<br>'})}else{dh+='暂无<br>'}
+    h+='<div style="background:var(--bg2);border-radius:10px;margin-bottom:8px"><div style="padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between" onclick="var n=this.nextElementSibling;n.style.display=n.style.display===\'none\'?\'block\':\'none\'"><span style="font-weight:600">'+d+'</span><span style="font-weight:700">'+r.total+' 分</span></div><div style="display:none;padding:0 16px 14px;font-size:13px;color:#888;line-height:1.6">'+dh+'</div></div>';
+  });
   document.getElementById('hist-list').innerHTML=h;
 }
-
-function updateToday(){
+  
+  function updateToday(){
   var s=score();document.getElementById('tscore').textContent=s;
   var e=document.getElementById('textra');
   if(s>100){e.className='extra over';e.textContent='+'+(s-100)+' 超越期待'}
