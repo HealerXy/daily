@@ -95,7 +95,7 @@
     "workout": false,
     "ent": false,
     "jyh": true,
-    "hyg": false,
+    "hyg": true,
     "fam": true,
     "world": false
   }
