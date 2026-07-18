@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Daily</title>
+<style>
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#111;max-width:500px;margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid #e8e8e8}
+header h1{font-size:18px;margin:0}
+.card{padding:14px 16px;margin:8px 16px;background:#f7f7f7;border-radius:10px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border:1.5px solid transparent;user-select:none}
+.card.done{border-color:#93bbfd;background:#eff6ff}
+.card .label{font-size:15px;flex:1}
+.card .pts{font-size:12px;color:#888;margin-left:4px}
+.card .circle{width:26px;height:26px;border-radius:50%;border:2px solid #e5e5e5;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.card.done .circle{background:#2563eb;border-color:#2563eb}
+.score{text-align:center;padding:30px 0}
+.score .num{font-size:72px;font-weight:800}
+.score .unit{font-size:18px;color:#888}
+.tabs{display:flex;border-bottom:1px solid #e8e8e8;padding:0 16px}
+.tabs button{flex:1;border:none;background:none;padding:12px 0;font-size:14px;color:#888;cursor:pointer}
+.tabs button.on{color:#111;font-weight:600;border-bottom:2px solid #2563eb}
+.nav{display:flex;border-top:1px solid #e8e8e8;position:fixed;bottom:0;width:100%;max-width:500px;background:#fff}
+.nav button{flex:1;border:none;background:none;padding:10px 0 8px;font-size:11px;color:#888;display:flex;flex-direction:column;align-items:center;gap:2px}
+.nav button.on{color:#2563eb;font-weight:600}
+.pg{display:none}
+.pg.on{display:block;padding-bottom:60px}
+</style>
+</head>
+<body>
+<header><h1>Daily</h1></header>
+
+<div class="tabs" id="subtabs">
+  <button class="on" data-c="daily">日常</button>
+  <button data-c="work">工作</button>
+  <button data-c="hobby">爱好</button>
+</div>
+
+<div id="pg-daily" class="pg on"><div id="daily-list"></div></div>
+<div id="pg-work" class="pg"><div id="work-list" style="padding:40px 16px;text-align:center;color:#888">还没有工作项</div></div>
+<div id="pg-hobby" class="pg"><div id="hobby-list" style="padding:40px 16px;text-align:center;color:#888">还没有爱好项</div></div>
+
+<div id="pg-today" class="pg">
+  <div class="score"><div id="today-num" class="num">0</div><div class="unit">分</div></div>
+</div>
+
+<div id="pg-hist" class="pg"><div id="hist-list" style="padding:40px 16px;text-align:center;color:#888">暂无记录</div></div>
+
+<nav class="nav" id="nav">
+  <button class="on" data-p="checkin">打卡</button>
+  <button data-p="today">今日</button>
+  <button data-p="hist">记录</button>
+</nav>
+
+<script>
+var items = [
+  {id:"sleep",t:"你今天有好好睡觉吗？",s:12},
+  {id:"diet",t:"你今天有健康饮食吗？",s:12},
+  {id:"workout",t:"你今天完成健身计划了吗？",s:10},
+  {id:"ent",t:"你今天限制娱乐时间了吗？",s:10},
+  {id:"jyh",t:"你今天有理解金奕含吗？",s:11},
+  {id:"hyg",t:"你今天保持自身清洁了吗？",s:5},
+  {id:"fam",t:"你今天有理解家人朋友吗？",s:5},
+  {id:"world",t:"你今天有了解世界吗？",s:5}
+];
+
+var today = getToday();
+function getToday() {
+  var d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+var STORAGE_KEY = "dt-v4";
+
+function load() {
+  var raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return {};
+  try { return JSON.parse(raw); } catch(e) { return {}; }
+}
+function save(d) { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
+
+var data = load();
+var dk = today;
+if (!data[dk]) data[dk] = {};
+items.forEach(function(it) {
+  if (!(it.id in data[dk])) data[dk][it.id] = false;
+});
+save(data);
+
+function score() {
+  var s = 0;
+  items.forEach(function(it) { if (data[dk][it.id]) s += it.s; });
+  return s;
+}
+
+function render() {
+  var html = "";
+  items.forEach(function(it) {
+    var done = data[dk][it.id];
+    html += "<div class="card"+(done?" done":"")+"" onclick="toggle('"+it.id+"')"><span class="label">"+it.t+" <span class="pts">"+it.s+"分</span></span><div class="circle"></div></div>";
+  });
+  document.getElementById("daily-list").innerHTML = html;
+  document.getElementById("today-num").textContent = score();
+}
+
+window.toggle = function(id) {
+  data[dk][id] = !data[dk][id];
+  save(data);
+  render();
+};
+
+// Tab switching
+var curP = "checkin";
+var curC = "daily";
+document.querySelectorAll("#nav button").forEach(function(b) {
+  b.onclick = function() {
+    curP = this.dataset.p;
+    document.querySelectorAll(".pg").forEach(function(p) { p.classList.remove("on"); });
+    document.getElementById("pg-" + curP).classList.add("on");
+    document.querySelectorAll("#nav button").forEach(function(bb) { bb.classList.remove("on"); });
+    this.classList.add("on");
+  };
+});
+document.querySelectorAll("#subtabs button").forEach(function(b) {
+  b.onclick = function() {
+    curC = this.dataset.c;
+    document.querySelectorAll("#subtabs button").forEach(function(bb) { bb.classList.remove("on"); });
+    this.classList.add("on");
+  };
+});
+
+render();
+</script>
+</body>
+</html>
