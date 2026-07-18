@@ -23,6 +23,12 @@
       "t": "学习研究生所用知识或技能",
       "bonus": 20,
       "done": false
+    },
+    {
+      "id": "w_1784388144979",
+      "t": "了解并选择研究生导师及研究方向",
+      "bonus": 30,
+      "done": false
     }
   ],
   "hobbyTasks": [],
@@ -40,6 +46,10 @@
       "done": false
     },
     "w_1784388128248": {
+      "hours": 0,
+      "done": false
+    },
+    "w_1784388144979": {
       "hours": 0,
       "done": false
     }
