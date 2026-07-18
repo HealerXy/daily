@@ -121,7 +121,7 @@ var ITEMS=[
   {id:'world',t:'你今天有了解世界吗？',s:5}
 ];
 var OWNER='HealerXy',REPO='daily',FILE='data.json';
-var PROXIES=['','https://gh-proxy.com/','https://mirror.ghproxy.com/'];var apiIdx=0;var API='';function tryNextAPI(){if(apiIdx<PROXIES.length){API=(PROXIES[apiIdx]?PROXIES[apiIdx]:'')+'https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+FILE;return true}apiIdx=0;API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+FILE;return false}
+var API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+FILE;
 var sha=null,token=null;
 
 var currentPg='checkin';var D=new Date();
@@ -132,37 +132,30 @@ function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.c
 
 async function loadFromGitHub(){
   if(!token)return false;
-  var tried=0;
-  while(tried<PROXIES.length){
-    document.getElementById('sync-status').textContent='sync...';
-    try{
-      var resp=await fetch(API,{headers:{Authorization:'Bearer '+token}});
-      if(!resp.ok)throw new Error(resp.status);
-      var j=await resp.json();sha=j.sha;
-      var raw=atob(j.content.replace(/\s/g,''));
-      var remote=JSON.parse(raw);
-      if(remote&&remote.workTasks)data=remote;
-      if(!data[DK])data[DK]={};ITEMS.forEach(function(it){if(!(it.id in data[DK]))data[DK][it.id]=false});
-      if(!data.workTasks)data.workTasks=[];if(!data.hobbyTasks)data.hobbyTasks=[];
-      if(!data.workToday)data.workToday={};if(!data.hobbyToday)data.hobbyToday={};
-      if(!data.records)data.records={};if(!data.settings)data.settings={workPtsPerHr:10,hobbyPtsPerCheck:5,hobbyMaxPerDay:20};
-      document.getElementById('sync-status').textContent='online';
-      localStorage.setItem('dt8',JSON.stringify(data));
-      return true;
-    }catch(e){
-      tried++;apiIdx++;
-      if(tried<PROXIES.length){tryNextAPI();continue}
-      console.log(e.message);
-      document.getElementById('sync-status').textContent='offline';
-      var l=localStorage.getItem('dt8');if(l)try{data=JSON.parse(l)}catch(ex){}
-      if(!data[DK])data[DK]={};ITEMS.forEach(function(it){if(!(it.id in data[DK]))data[DK][it.id]=false});
-      if(!data.workTasks)data.workTasks=[];if(!data.hobbyTasks)data.hobbyTasks=[];
-      if(!data.workToday)data.workToday={};if(!data.hobbyToday)data.hobbyToday={};
-      if(!data.records)data.records={};if(!data.settings)data.settings={workPtsPerHr:10,hobbyPtsPerCheck:5,hobbyMaxPerDay:20};
-      return false;
-    }
+  document.getElementById('sync-status').textContent='sync...';
+  try{
+    var resp=await fetch(API,{headers:{Authorization:'Bearer '+token}});
+    if(!resp.ok){document.getElementById('sync-status').textContent='HTTP '+resp.status;return false}
+    var j=await resp.json();sha=j.sha;
+    var raw=atob(j.content.replace(/\s/g,''));
+    var remote=JSON.parse(raw);
+    if(remote&&remote.workTasks)data=remote;
+    if(!data[DK])data[DK]={};ITEMS.forEach(function(it){if(!(it.id in data[DK]))data[DK][it.id]=false});
+    if(!data.workTasks)data.workTasks=[];if(!data.hobbyTasks)data.hobbyTasks=[];
+    if(!data.workToday)data.workToday={};if(!data.hobbyToday)data.hobbyToday={};
+    if(!data.records)data.records={};if(!data.settings)data.settings={workPtsPerHr:10,hobbyPtsPerCheck:5,hobbyMaxPerDay:20};
+    document.getElementById('sync-status').textContent='online';
+    localStorage.setItem('dt8',JSON.stringify(data));
+    return true;
+  }catch(e){
+    document.getElementById('sync-status').textContent=e.message.slice(0,20);
+    var l=localStorage.getItem('dt8');if(l)try{data=JSON.parse(l)}catch(ex){}
+    if(!data[DK])data[DK]={};ITEMS.forEach(function(it){if(!(it.id in data[DK]))data[DK][it.id]=false});
+    if(!data.workTasks)data.workTasks=[];if(!data.hobbyTasks)data.hobbyTasks=[];
+    if(!data.workToday)data.workToday={};if(!data.hobbyToday)data.hobbyToday={};
+    if(!data.records)data.records={};if(!data.settings)data.settings={workPtsPerHr:10,hobbyPtsPerCheck:5,hobbyMaxPerDay:20};
+    return false;
   }
-  return false;
 }
 
 var pendingSave=null,saving=false;
@@ -171,20 +164,14 @@ async function doSave(){
   if(saving||!token)return;saving=true;
   document.getElementById('sync-status').textContent='saving...';
   var json=JSON.stringify(data,null,2);localStorage.setItem('dt8',json);
-  var tried=0;
-  while(tried<PROXIES.length){
-    try{
-      var content=btoa(unescape(encodeURIComponent(json)));
-      var body={message:'update '+DK,content:content};if(sha)body.sha=sha;
-      var resp=await fetch(API,{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
-      if(resp.status===409){var f=await fetch(API,{headers:{Authorization:'Bearer '+token}});if(f.ok){var fj=await f.json();sha=fj.sha;body.sha=sha;var r2=await fetch(API,{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});if(r2.ok)sha=(await r2.json()).content.sha}}
-      else if(resp.ok){sha=(await resp.json()).content.sha;}
-      document.getElementById('sync-status').textContent='online';saving=false;return;
-    }catch(e){
-      tried++;apiIdx++;if(tried<PROXIES.length){tryNextAPI();continue}
-      document.getElementById('sync-status').textContent='offline';
-    }
-  }
+  try{
+    var content=btoa(unescape(encodeURIComponent(json)));
+    var body={message:'update '+DK,content:content};if(sha)body.sha=sha;
+    var resp=await fetch(API,{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(resp.status===409){var f=await fetch(API,{headers:{Authorization:'Bearer '+token}});if(f.ok){var fj=await f.json();sha=fj.sha;body.sha=sha;var r2=await fetch(API,{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});if(r2.ok)sha=(await r2.json()).content.sha}}
+    else if(resp.ok){sha=(await resp.json()).content.sha;}
+    document.getElementById('sync-status').textContent='online';
+  }catch(e){document.getElementById('sync-status').textContent='err:'+e.message.slice(0,15)}
   saving=false;
 }
 async function saveToGitHub(){
@@ -280,11 +267,11 @@ function saveToken(){
   var v=document.getElementById('token-input').value.trim();
   if(!v)return;
   token=v;localStorage.setItem('dt8_token',token);
-  tryNextAPI();document.getElementById('setup').style.display='none';loadFromGitHub().then(function(){refreshAll()});
+  document.getElementById('setup').style.display='none';loadFromGitHub().then(function(){refreshAll()});
 }
 
 // Init
-var savedToken=localStorage.getItem('dt8_token');tryNextAPI();
+var savedToken=localStorage.getItem('dt8_token');
 if(savedToken){token=savedToken;loadFromGitHub().then(function(){refreshAll()})}
 else{document.getElementById('setup').style.display='flex'}
 
