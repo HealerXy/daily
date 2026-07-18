@@ -94,7 +94,7 @@
     "diet": false,
     "workout": false,
     "ent": false,
-    "jyh": false,
+    "jyh": true,
     "hyg": false,
     "fam": false,
     "world": false
