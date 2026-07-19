@@ -67,6 +67,10 @@
     "w_1784388144979": {
       "hours": 1,
       "done": false
+    },
+    "w_1784388068484": {
+      "hours": 1,
+      "done": true
     }
   },
   "hobbyToday": {},
