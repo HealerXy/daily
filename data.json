@@ -29,12 +29,6 @@
       "t": "学习ai制作网页",
       "bonus": 20,
       "done": true
-    },
-    {
-      "id": "w_1784391934951",
-      "t": "学习ai制作网页",
-      "bonus": 20,
-      "done": false
     }
   ],
   "hobbyTasks": [
@@ -60,10 +54,6 @@
     }
   ],
   "workToday": {
-    "w_1784391934951": {
-      "hours": 4,
-      "done": true
-    },
     "w_1784388144979": {
       "hours": 1,
       "done": false
@@ -105,6 +95,16 @@
     "jyh": true,
     "hyg": true,
     "fam": true,
+    "world": false
+  },
+  "2026-07-20": {
+    "sleep": false,
+    "diet": false,
+    "workout": false,
+    "ent": false,
+    "jyh": false,
+    "hyg": false,
+    "fam": false,
     "world": false
   }
 }
